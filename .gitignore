@@ -5,5 +5,5 @@ target
 .project
 .classpath
 .iml
-IzouAddOn.iml
 .idea
+IzouMail.iml

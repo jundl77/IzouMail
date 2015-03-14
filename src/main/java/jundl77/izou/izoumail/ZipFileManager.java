@@ -1,4 +1,4 @@
-package intellimate.izou.exampleaddon;
+package jundl77.izou.izoumail;
 
 import ro.fortsoft.pf4j.PluginWrapper;
 
