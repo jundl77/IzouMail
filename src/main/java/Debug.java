@@ -16,8 +16,8 @@ public class Debug {
 //
 //        Main main = new Main(addOns, true);
 
-        MailOutputData outputData = new MailOutputData("sbrendl@yahoo.com", "julianbrendl@gmail.com",
-                "Test", "This is a test.");
+        MailOutputData outputData = new MailOutputData("sbrendl@yahoo.com",
+                "Test", "Hey mama, diese e-mail wurde automatisch von izou geschickt :D ist doch geil oder?");
 
         List<MailOutputData> outputDataList = new ArrayList<>();
         outputDataList.add(outputData);
@@ -47,7 +47,7 @@ public class Debug {
 
                 MimeMessage message = new MimeMessage(session);
 
-                message.setFrom(new InternetAddress(o.getFromAddress()));
+                message.setFrom(new InternetAddress(username));
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(o.getToAddress()));
                 message.setSubject(o.getSubject());
                 message.setText(o.getContent());

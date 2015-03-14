@@ -49,7 +49,7 @@ public class MailOutputPlugin extends OutputPlugin<MailOutputData> {
                 MimeMessage message = new MimeMessage(session);
 
                 getContext().logger.getLogger().debug("Adding content of e-mail");
-                message.setFrom(new InternetAddress(outputData.getFromAddress()));
+                message.setFrom(new InternetAddress(username));
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(outputData.getToAddress()));
                 message.setSubject(outputData.getSubject());
                 message.setText(outputData.getContent());
