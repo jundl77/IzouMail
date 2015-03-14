@@ -1,29 +1,31 @@
-import jundl77.izou.izoumail.MailOutputData;
+package jundl77.izou.izoumail;
+
+import intellimate.izou.output.OutputPlugin;
+import intellimate.izou.system.Context;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 /**
- * Use this class to debug
+ * The MailOutputPlugin is capable of sending an email
  */
-public class Debug {
-    public static void main(String[] args) {
-//        LinkedList<AddOn> addOns = new LinkedList<>();
-//
-//        Main main = new Main(addOns, true);
+public class MailOutputPlugin extends OutputPlugin<MailOutputData> {
+    /**
+     * The ID of the output plugin
+     */
+    public static final String ID = MailAddOn.class.getCanonicalName();
 
-        MailOutputData outputData = new MailOutputData("sbrendl@yahoo.com", "julianbrendl@gmail.com",
-                "Test", "This is a test.");
+    public MailOutputPlugin(Context context) {
+        super(ID, context);
+    }
 
-        List<MailOutputData> outputDataList = new ArrayList<>();
-        outputDataList.add(outputData);
-
+    @Override
+    public void renderFinalOutput() {
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-        // Get a Properties object
+
+        getContext().logger.getLogger().debug("Starting new mail session");
         Properties props = System.getProperties();
         props.setProperty("mail.smtp.host", "smtp.gmail.com");
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
@@ -37,9 +39,8 @@ public class Debug {
         String username = "intellimate.izou@gmail.com";//
         String password = "Karlskrone";
 
-        for (MailOutputData o : outputDataList) {
-            try {
-
+        for (MailOutputData outputData : pollTDoneList()) {
+            try{
                 Session session = Session.getDefaultInstance(props, new Authenticator(){
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
@@ -47,14 +48,17 @@ public class Debug {
 
                 MimeMessage message = new MimeMessage(session);
 
-                message.setFrom(new InternetAddress(o.getFromAddress()));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(o.getToAddress()));
-                message.setSubject(o.getSubject());
-                message.setText(o.getContent());
+                getContext().logger.getLogger().debug("Adding content of e-mail");
+                message.setFrom(new InternetAddress(outputData.getFromAddress()));
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(outputData.getToAddress()));
+                message.setSubject(outputData.getSubject());
+                message.setText(outputData.getContent());
 
+                getContext().logger.getLogger().debug("Sending e-mail");
                 Transport.send(message);
+                getContext().logger.getLogger().debug("E-mail sent successfully");
             } catch (MessagingException e) {
-                e.printStackTrace();
+                getContext().logger.getLogger().error("Unable to send e-mail", e);
             }
         }
     }

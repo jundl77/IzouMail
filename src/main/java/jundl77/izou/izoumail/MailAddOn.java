@@ -29,26 +29,28 @@ public class MailAddOn extends AddOn {
 
     @Override
     public Activator[] registerActivator() {
-        return new Activator[0];
+        return null;
     }
 
     @Override
     public ContentGenerator[] registerContentGenerator() {
-        return new ContentGenerator[0];
+        return null;
     }
 
     @Override
     public EventsController[] registerEventController() {
-        return new EventsController[0];
+        return null;
     }
 
     @Override
     public OutputPlugin[] registerOutputPlugin() {
-        return new OutputPlugin[0];
+        OutputPlugin[] outputPlugins = new OutputPlugin[1];
+        outputPlugins[0] = new MailOutputPlugin(getContext());
+        return outputPlugins;
     }
 
     @Override
     public OutputExtension[] registerOutputExtension() {
-        return new OutputExtension[0];
+        return null;
     }
 }
